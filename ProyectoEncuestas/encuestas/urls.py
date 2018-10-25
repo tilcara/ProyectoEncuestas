@@ -1,19 +1,16 @@
-from django.urls import path
 
+from django.urls import path
 from . import views
 
 app_name='encuestas'
 
 urlpatterns = [
-    # ej: /encuestas/
-    path('', views.index, name='index'),
+    
+    path('', views.IndexView.as_view(), name='index'),
 
-    # ej: /encuestas/5/
-    path('<int:pregunta_id>/', views.detalle, name='detalle'),
+    path('<int:pk>/', views.DetailView.as_view(), name='detalle'),
     
-    # ej: /encuestas/5/resultados/
-    path('<int:pregunta_id>/resultados/', views.resultados, name='resultados'),
+    path('<int:pk>/resultados/', views.ResultadosView.as_view(), name='resultados'),
     
-    # ej: /encuestas/5/votar/
     path('<int:pregunta_id>/votar/', views.votar, name='votar'),
 ]

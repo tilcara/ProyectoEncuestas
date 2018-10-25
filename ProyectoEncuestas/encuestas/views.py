@@ -1,27 +1,39 @@
 
 
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
+from django.views import generic
+from django.utils import timezone
 
 from .models import Pregunta, Opcion
 
 
-def index(request):
+class IndexView(generic.ListView):
 	
-	ultimas_preguntas=Pregunta.objects.order_by('-fecha_publicacion')[:5]
-	contexto={'ultimas_preguntas':ultimas_preguntas,}
-	return render(request,'encuestas/index.html',contexto)	
+	template_name='encuestas/index.html'
+	context_object_name='ultimas_preguntas'	
+
+	def get_queryset(self):
+
+		return Pregunta.objects.exclude(opcion__opcion__isnull=True).filter(fecha_publicacion__lte=timezone.now()).order_by('-fecha_publicacion')[:5]
 	
-def detalle(request, pregunta_id):
 
-	pregunta=get_object_or_404(Pregunta,pk=pregunta_id)
-	return render(request,'encuestas/detalle.html',{'pregunta':pregunta})
+class DetailView(generic.DetailView):
 
-def resultados(request, pregunta_id):
+	model=Pregunta
+	template_name='encuestas/detalle.html'
 
-	pregunta=get_object_or_404(Pregunta,pk=pregunta_id)
-	return render(request,'encuestas/resultados.html',{'pregunta':pregunta})
+	def get_queryset(self):
+
+		return Pregunta.objects.filter(fecha_publicacion__lte=timezone.now())
+
+
+class ResultadosView(generic.DetailView):
+
+	model=Pregunta
+	template_name='encuestas/resultados.html'
+
 
 def votar(request, pregunta_id):
 

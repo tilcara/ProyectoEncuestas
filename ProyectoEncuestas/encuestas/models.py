@@ -1,6 +1,6 @@
 
 from django.db import models
-from datetime import datetime, timedelta
+from datetime import timedelta
 from django.utils import timezone
 
 
@@ -10,9 +10,12 @@ class Pregunta(models.Model):
 	fecha_publicacion=models.DateTimeField('Fecha de Publicacion')
 
 	def publicada_recientemente(self):
-		return self.fecha_publicacion >= timezone.now() - datetime.timedelta(days=1)
+
+		hoy=timezone.now()
+		return hoy - timedelta(days=1) <= self.fecha_publicacion <= hoy
 
 	def __str__(self):
+
 		return self.pregunta
 
 

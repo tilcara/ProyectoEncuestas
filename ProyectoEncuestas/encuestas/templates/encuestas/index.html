@@ -1,9 +1,27 @@
-{% if ultimas_preguntas %}
-	<ul>
-		{% for pregunta in ultimas_preguntas %}
-			<li><a href="{% url 'encuestas:detalle' pregunta.id%}">{{pregunta.pregunta}}</a></li>
-		{% endfor %}
-	</ul>
-{% else %}
-	<p>No hay encuestas disponibles</p>
-{% endif %}
+	{% extends 'encuestas/base.html' %}
+
+	{% block title %}Encuestas{% endblock %}
+
+	{% block content %}
+
+	<div class="container-fluid">
+
+    	{% if ultimas_preguntas %}
+			<div class="list-group">
+			{% for pregunta in ultimas_preguntas %}
+				<a href="{% url 'encuestas:detalle' pregunta.id%}" class="list-group-item list-group-item-action">{{pregunta.pregunta}}</a>
+			{% endfor %}
+			</div>
+		{% else %}
+		<p>No hay encuestas disponibles</p>
+		{% endif %}
+
+	</div>
+
+	{% endblock %}
+
+
+
+
+
+

@@ -1,15 +1,58 @@
-<h1>{{pregunta.pregunta}}</h1>
+	
 
-{% if error_message %}
-	<p><strong>{{error_message}}</strong></p>
-{% endif %}
 
-<form action="{% url 'encuestas:votar' pregunta.id %}" method="post">
-	{% csrf_token %}
-	{% for opcion in pregunta.opcion_set.all %}
-		<input type="radio" name="opcion" id="opcion{{ forloop.counter }}" value="{{ opcion.id }}">
-		<label>{{ opcion.opcion }}</label>
-		<br>
-	{% endfor %}
-	<input type="submit" value="Votar">
-</form>
+    {% extends 'encuestas/base.html' %}
+
+    {% load static %}
+
+    {% block title %}Votar{% endblock %}
+
+
+    {% block extrahead %}
+    <link rel="stylesheet" type="text/css" href="{% static 'encuestas/estilo-detalle.css' %}">
+    {% endblock %}
+
+	{% block content %}
+
+	<div class="container-fluid">
+
+    	<h3>{{pregunta.pregunta}}</h3>
+
+    	{% if error_message %}
+			<p><strong>{{error_message}}</strong></p>
+		{% endif %}
+
+		
+		<form action="{% url 'encuestas:votar' pregunta.id %}" method="post">
+			{% csrf_token %}
+			{% for opcion in pregunta.opcion_set.all %}
+			
+				<input type="radio" name="opcion" id="opcion{{ forloop.counter }}" value="{{ opcion.id }}">
+				<label class="etiqueta">{{ opcion.opcion }}</label>
+				<br>
+			
+			{% endfor %}
+			<input type="submit" value="Votar">
+		</form>
+		
+
+
+	</div>
+
+	{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

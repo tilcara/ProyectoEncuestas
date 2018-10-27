@@ -26,7 +26,7 @@ class DetailView(generic.DetailView):
 
 	def get_queryset(self):
 
-		return Pregunta.objects.filter(fecha_publicacion__lte=timezone.now())
+		return Pregunta.objects.exclude(opcion__opcion__isnull=True).filter(fecha_publicacion__lte=timezone.now())
 
 
 class ResultadosView(generic.DetailView):

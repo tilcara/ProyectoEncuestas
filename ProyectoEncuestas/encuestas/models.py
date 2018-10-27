@@ -14,6 +14,10 @@ class Pregunta(models.Model):
 		hoy=timezone.now()
 		return hoy - timedelta(days=1) <= self.fecha_publicacion <= hoy
 
+	publicada_recientemente.admin_order_field='fecha_publicacion'
+	publicada_recientemente.boolean=True
+	publicada_recientemente.short_description='¿Publicada recientemente?'
+
 	def __str__(self):
 
 		return self.pregunta
